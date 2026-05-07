@@ -94,6 +94,17 @@ UNITREE_B2_PIPER_CFG.ee_camera_offset = CameraCfg.OffsetCfg(
     rot=tuple(float(x) for x in R.from_euler("xyz", [0.0, 0.0, -np.pi / 2]).as_quat(scalar_first=True)),
     convention="ros",
 )
+
+UNITREE_B2_PIPER_CFG.leg_joint_names = [
+    "FR_hip_joint", "FR_thigh_joint", "FR_calf_joint",
+    "FL_hip_joint", "FL_thigh_joint", "FL_calf_joint",
+    "RR_hip_joint", "RR_thigh_joint", "RR_calf_joint",
+    "RL_hip_joint", "RL_thigh_joint", "RL_calf_joint",
+]
+UNITREE_B2_PIPER_CFG.arm_joint_names = [
+    'arm_joint1', 'arm_joint2', 'arm_joint3', 'arm_joint4',
+    'arm_joint5', 'arm_joint6', 'arm_joint7', 'arm_joint8'
+]
 UNITREE_B2_PIPER_CFG.joint_names = [
     "FR_hip_joint", "FR_thigh_joint", "FR_calf_joint",
     "FL_hip_joint", "FL_thigh_joint", "FL_calf_joint",

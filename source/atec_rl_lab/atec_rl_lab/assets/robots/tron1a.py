@@ -48,29 +48,33 @@ TRON1A_WHEEL_CFG = ATECArticulationCfg(
     ),
     soft_joint_pos_limit_factor=0.9,
     actuators={
-        "leg_wheels": ImplicitActuatorCfg(
+        "legs": ImplicitActuatorCfg(
             joint_names_expr=[
-                "abad_[L,R]_Joint",
-                "hip_[L,R]_Joint",
-                "knee_[L,R]_Joint",
-                "wheel_[L,R]_Joint",
+                "abad_L_Joint",
+                "abad_R_Joint",
+                "hip_L_Joint",
+                "hip_R_Joint",
+                "knee_L_Joint",
+                "knee_R_Joint",
             ],
-            effort_limit_sim=80.0,
-            velocity_limit_sim=15.0,
-            stiffness={
-                "abad_[L,R]_Joint": 40.0,
-                "hip_[L,R]_Joint": 40.0,
-                "knee_[L,R]_Joint": 40.0,
-                "wheel_[L,R]_Joint": 0.0,
-            },
-            damping={
-                "abad_[L,R]_Joint": 2.5,
-                "hip_[L,R]_Joint": 2.5,
-                "knee_[L,R]_Joint": 2.5,
-                "wheel_[L,R]_Joint": 0.8,
-            },
-            friction=0.002,
-            armature=0.002,
+            effort_limit=80.0,
+            velocity_limit=15.0,
+            stiffness=40.0,
+            damping=2.5,
+            friction=0.01,
+            armature=0.01,
+        ),
+        "wheels": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "wheel_L_Joint",
+                "wheel_R_Joint",
+            ],
+            effort_limit=80.0,
+            velocity_limit=15.0,
+            stiffness=0.0,
+            damping=0.8,
+            friction=0.01,
+            armature=0.01,
         ),
     },
     base_link_name="base_Link",
@@ -104,6 +108,17 @@ TRON1A_PIPER_CFG.ee_camera_offset = CameraCfg.OffsetCfg(
     rot=tuple(float(x) for x in R.from_euler("xyz", [0., 0, -np.pi/2]).as_quat(scalar_first=True)),
     convention="ros",
 )
+TRON1A_PIPER_CFG.leg_joint_names = [
+    "abad_L_Joint", "hip_L_Joint", "knee_L_Joint",
+    "abad_R_Joint", "hip_R_Joint", "knee_R_Joint",
+]
+TRON1A_PIPER_CFG.wheel_joint_names = [
+    "wheel_L_Joint", "wheel_R_Joint",
+]
+TRON1A_PIPER_CFG.arm_joint_names = [
+    'arm_joint1', 'arm_joint2', 'arm_joint3', 'arm_joint4',
+    'arm_joint5', 'arm_joint6', 'arm_joint7', 'arm_joint8'
+]
 TRON1A_PIPER_CFG.joint_names = [
     "abad_L_Joint", "hip_L_Joint", "knee_L_Joint",
     "abad_R_Joint", "hip_R_Joint", "knee_R_Joint",
