@@ -130,6 +130,11 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # set the log directory for the environment (works for all environment types)
     env_cfg.log_dir = log_dir
 
+    # ── 固定速度指令 ──
+    env_cfg.commands.base_velocity.ranges.lin_vel_x = (0.5, 0.5)   # 固定前进 0.5 m/s
+    env_cfg.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)   # 不侧移
+    env_cfg.commands.base_velocity.ranges.ang_vel_z = (0.0, 0.0)   # 不转弯
+
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg, render_mode="rgb_array" if args_cli.video else None)
 

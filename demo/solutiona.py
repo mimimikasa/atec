@@ -54,10 +54,10 @@ class AlgSolution:
             dtype=torch.float32,
         ).view(1, 3)
 
-        # Heading correction state
-        self.heading_estimate = 0.0
-        self.control_dt = 0.02  # decimation(4) * sim_dt(0.005)
+        self.heading = 0.0
+        self.control_dt = 0.02
         self.heading_kp = 2.0
+        self.heading_kd = 0.3
 
         self.arm_default_action = torch.zeros(
             (1, self.arm_action_dim),
@@ -65,6 +65,9 @@ class AlgSolution:
             dtype=torch.float32,
         )
 
+
+    def reset(self, **kwargs):
+        self.heading = 0.0
 
     def get_action_spec(self) -> dict[str, dict[str, Any]] | None:
         return {}
@@ -117,13 +120,14 @@ class AlgSolution:
         return (full_target - self.default_joint_pos) / self.ACTION_SCALE
 
     def _get_velocity_commands(self, proprio: torch.Tensor) -> torch.Tensor:
-        """Return velocity commands with heading correction to keep robot on track."""
+        """Heading-hold via PD control on integrated yaw."""
         num_envs = proprio.shape[0]
+        wz = proprio[:, 5].mean().item()
 
-        yaw_rate = proprio[:, 5].mean().item()
-        self.heading_estimate += yaw_rate * self.control_dt
+        self.heading += wz * self.control_dt
+        self.heading = max(-0.5, min(0.5, self.heading))
 
-        yaw_cmd = -self.heading_kp * self.heading_estimate
+        yaw_cmd = -self.heading_kp * self.heading - self.heading_kd * wz
         yaw_cmd = max(-1.0, min(1.0, yaw_cmd))
 
         cmd = torch.tensor(

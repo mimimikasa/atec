@@ -131,13 +131,13 @@ class TaskDEnvCfg(BaseEnvCfg):
 
         # Trun off terminations
         self.terminations.illegal_contact = None
-        self.terminations.fall.params["minimum_height"] = 0.25
+        self.terminations.fall.params["minimum_height"] = 0  # disabled for debugging
 
 @configclass
 class TaskDEnvG1Cfg(TaskDEnvCfg):
     """Environment configuration for Task C with Unitree g1."""
 
-    pit_width_range: tuple[float, float] = (0.9, 1.0)
+    pit_width_rademo/solution.pynge: tuple[float, float] = (0.9, 1.0)
     platform_height_range: tuple[float, float] = (0.9, 1.0)
 
     def __post_init__(self):
